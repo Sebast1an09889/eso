@@ -1,0 +1,94 @@
+{% include 'partials/navbar.html' %}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Autos Disponibles</h1>
+
+    <!-- Tabla de autos disponibles -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Modelo</th>
+                <th>Color</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for auto in autos %}
+            <tr>
+                <td>{{ auto.id }}</td>
+                <td>{{ auto.modelo.modelo }}</td>
+                <td>{{ auto.color }}</td>
+                <td>{{ auto.estado }}</td>
+                <td>
+                    <!-- Botón para Editar -->
+                    <a href="{% url 'editar_auto' auto.id %}" class="btn btn-warning btn-sm">
+                        Editar
+                    </a>
+                    <!-- Botón para Cancelar/Eliminar -->
+                    {% if auto.id %}
+                        <form method="post" action="{% url 'cancelar_auto' auto.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                Cancelar
+                            </button>
+                        </form>
+                    {% else %}
+                        <span class="text-danger">ID no disponible</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center">No hay autos disponibles</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2 class="mt-5 mb-4">Autos Vendidos</h2>
+    <!-- Tabla de autos vendidos con cliente asociado -->
+    <table class="table table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Modelo</th>
+                <th>Color</th>
+                <th>Comprador</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in autos_vendidos %}
+            <tr>
+                <td>{{ item.auto.id }}</td>
+                <td>{{ item.auto.modelo.modelo }}</td>
+                <td>{{ item.auto.color }}</td>
+                <td>{{ item.cliente.nombre }}</td>
+                <td>
+                    <!-- Botón para Editar -->
+                    <a href="{% url 'editar_auto' item.auto.id %}" class="btn btn-warning btn-sm">
+                        Editar
+                    </a>
+                    <!-- Botón para Cancelar/Eliminar -->
+                    {% if item.auto.id %}
+                        <form method="post" action="{% url 'cancelar_auto' item.auto.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                Cancelar
+                            </button>
+                        </form>
+                    {% else %}
+                        <span class="text-danger">ID no disponible</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center">No hay autos vendidos aún</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

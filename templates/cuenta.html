@@ -1,0 +1,63 @@
+{% include 'partials/navbar.html' %}
+<div class="container">
+    <h1 class="mb-4">Gestión de Clientes</h1>
+
+    <!-- Formulario para crear un nuevo cliente -->
+    <div class="mb-5">
+    
+        <form method="post" action="{% url 'crear_usuario' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" name="crear" class="btn btn-success">Crear Cliente</button>
+        </form>
+    </div>
+
+    <!-- Tabla de clientes -->
+    <h3>Clientes Registrados</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Teléfono</th>
+                <th>Autos Comprados</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in clientes_con_pedidos %}
+            <tr>
+                <td>{{ item.cliente.id }}</td>
+                <td>{{ item.cliente.nombre }}</td>
+                <td>{{ item.cliente.correo }}</td>
+                <td>{{ item.cliente.telefono }}</td>
+                <td>
+                    {% if item.autos %}
+                        <ul>
+                            {% for auto in item.autos %}
+                                <li>{{ auto.modelo.modelo }} - {{ auto.color }} ({{ auto.numero_serie }})</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        No ha comprado autos
+                    {% endif %}
+                </td>
+                <td>
+                    <!-- Botón para editar -->
+                    <a href="{% url 'editar_usuario' item.cliente.id %}" class="btn btn-primary btn-sm">Editar</a>
+                    <!-- Botón para eliminar -->
+                    <form method="post" action="{% url 'eliminar_usuario' item.cliente.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">No hay clientes registrados aún.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

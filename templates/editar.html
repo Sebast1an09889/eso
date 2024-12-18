@@ -1,0 +1,31 @@
+{% include 'partials/navbar.html' %}
+<div class="container mt-5">
+    <h1>Editar Cliente</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" value="{{ cliente.nombre }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="correo" class="form-label">Correo</label>
+            <input type="email" class="form-control" id="correo" name="correo" value="{{ cliente.correo }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="telefono" class="form-label">Teléfono</label>
+            <input type="text" class="form-control" id="telefono" name="telefono" value="{{ cliente.telefono }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="auto" class="form-label">Auto Comprado</label>
+            <select class="form-select" id="auto" name="auto_id">
+                <option value="">-- Seleccione un Auto --</option>
+                {% for auto in autos %}
+                    <option value="{{ auto.id }}" {% if auto.id == auto_seleccionado.id %}selected{% endif %}>
+                        {{ auto.modelo.modelo }} - {{ auto.numero_serie }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+</div>

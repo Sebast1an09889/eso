@@ -1,0 +1,11 @@
+{% include 'partials/navbar.html' %}
+<div class="container mt-4">
+    <h1>Opciosddsnes de Venta</h1>
+
+    <!-- Opciones de navegación -->
+    <div class="mt-4">
+        <a href="{% url 'modelo' %}" class="btn btn-primary">Ver Autos Disponibles</a>
+        <a href="{% url 'compra' %}" class="btn btn-info">Historial de Compras</a>
+        <a href="{% url 'cancelar_auto' auto.id%}" class="btn btn-danger">Cancelar Operación</a>
+    </div>
+</div>
